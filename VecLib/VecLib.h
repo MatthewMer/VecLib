@@ -18,18 +18,20 @@ namespace VecLib {
 		Vec3& operator+=(const Vec3& rhs);
 		Vec3& operator-=(const Vec3& rhs);
 
-		const Vec3& operator+(const Vec3& rhs);
-		const Vec3& operator-(const Vec3& rhs);
+		Vec3 operator+(const Vec3& rhs);
+		Vec3 operator-(const Vec3& rhs);
 
 		template<typename T>
-		const Vec3& operator/(const T& rhs);
+		Vec3 operator/(const T& rhs);
 		template<typename T>
-		const Vec3& operator*(const T& rhs);
+		Vec3 operator*(const T& rhs);
 
 		template<typename T>
 		Vec3& operator/=(const T& rhs);
 		template<typename T>
 		Vec3& operator*=(const T& rhs);
+
+
 
 		float magnitude() const;
 		float dot(const Vec3& in);
