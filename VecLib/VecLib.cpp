@@ -6,125 +6,201 @@
 
 #include "VecLib.h"
 
-#include <cmath>
-#define _USE_MATH_DEFINES
-
 namespace VecLib {
 	namespace {
-		const double pi = 3.14159265358979323846;
+		
+
+		template<class T>
+		void swap(T& lhs, T& rhs) noexcept {
+			std::swap(lhs, rhs);
+		}
+		/*
+		template<class T, class ... Tn>
+		T cross_det(Tn&& ... input){
+			std::vector<std::vector<float>> mat;
+			([&]{
+					mat.push_back(inputs);
+				}
+			(), ...);
+
+			size_t args = size - 1;
+
+			T result = T();
+			for (size_t row = 0; row < size; row++) {
+				float res = .0f;
+
+				for (size_t i = 0; i < args; i++) {
+					if (i == row) { continue; }
+					
+
+				}
+			}
+		}
+		*/
 	}
 
-	Vec3& Vec3::operator=(const Vec3& rhs) {
-		Vec3 temp(rhs);
-		this->swap(temp);
-		return *this;
+	float& Vec3::operator[](size_t idx) {
+		return vec[idx];
 	}
 
-	void Vec3::swap(Vec3& rhs) noexcept {
-		std::swap(*this, rhs);
+	const float& Vec3::operator[](size_t idx) const {
+		return vec[idx];
 	}
 
 	Vec3& Vec3::operator+=(const Vec3& rhs) {
-		this->x += rhs.x;
-		this->y += rhs.y;
-		this->z += rhs.z;
+		vec[0] += rhs[0];
+		vec[1] += rhs[1];
+		vec[2] += rhs[2];
 		return *this;
 	}
 
 	Vec3& Vec3::operator-=(const Vec3& rhs) {
-		this->x -= rhs.x;
-		this->y -= rhs.y;
-		this->z -= rhs.z;
+		vec[0] -= rhs[0];
+		vec[1] -= rhs[1];
+		vec[2] -= rhs[2];
 		return *this;
 	}
 
-	template<typename T>
-	Vec3& Vec3::operator/=(const T& rhs) {
-		this->x /= rhs;
-		this->y /= rhs;
-		this->z /= rhs;
+	template<typename Tn>
+	Vec3& Vec3::operator/=(const Tn& rhs) {
+		vec[0] /= rhs;
+		vec[1] /= rhs;
+		vec[2] /= rhs;
 		return *this;
 	}
 
-	template<typename T>
-	Vec3& Vec3::operator*=(const T& rhs) {
-		this->x *= rhs;
-		this->y *= rhs;
-		this->z *= rhs;
+	template<typename Tn>
+	Vec3& Vec3::operator*=(const Tn& rhs) {
+		vec[0] *= rhs;
+		vec[1] *= rhs;
+		vec[2] *= rhs;
+		return *this;
+	}
+
+	Vec3& Vec3::operator=(const Vec3& rhs) {
+		Vec3 temp(rhs);
+		swap(*this, temp);
 		return *this;
 	}
 
 	Vec3 Vec3::operator+(const Vec3& rhs) {
 		return Vec3(
-			this->x + rhs.x,
-			this->y + rhs.y,
-			this->z + rhs.z
+			vec[0] + rhs[0],
+			vec[1] + rhs[1],
+			vec[2] + rhs[2]
 		);
 	}
 
 	Vec3 Vec3::operator-(const Vec3& rhs) {
 		return Vec3(
-			this->x - rhs.x,
-			this->y - rhs.y,
-			this->z - rhs.z
+			vec[0] - rhs[0],
+			vec[1] - rhs[1],
+			vec[2] - rhs[2]
 		);
 	}
 
-	template<typename T>
-	Vec3 Vec3::operator/(const T& rhs) {
+	template<typename Tn>
+	Vec3 Vec3::operator/(const Tn& rhs) {
 		return Vec3(
-			this->x / rhs,
-			this->y / rhs,
-			this->z / rhs
+			vec[0] / rhs,
+			vec[1] / rhs,
+			vec[2] / rhs
 		);
 	}
 
-	template<typename T>
-	Vec3 Vec3::operator*(const T& rhs) {
+	template<typename Tn>
+	Vec3 Vec3::operator*(const Tn& rhs) {
 		return Vec3(
-			this->x * rhs,
-			this->y * rhs,
-			this->z * rhs
+			vec[0] + rhs,
+			vec[1] + rhs,
+			vec[2] + rhs
+		);
+	}
+	
+
+	float& Vec4::operator[](size_t idx) {
+		return vec[idx];
+	}
+
+	const float& Vec4::operator[](size_t idx) const {
+		return vec[idx];
+	}
+
+	Vec4& Vec4::operator=(const Vec4& rhs) {
+		Vec4 temp(rhs);
+		swap(*this, temp);
+		return *this;
+	}
+
+	Vec4& Vec4::operator+=(const Vec4& rhs) {
+		vec[0] += rhs[0];
+		vec[1] += rhs[1];
+		vec[2] += rhs[2];
+		vec[3] += rhs[3];
+		return *this;
+	}
+
+	Vec4& Vec4::operator-=(const Vec4& rhs) {
+		vec[0] -= rhs[0];
+		vec[1] -= rhs[1];
+		vec[2] -= rhs[2];
+		vec[3] -= rhs[3];
+		return *this;
+	}
+
+	template<typename Tn>
+	Vec4& Vec4::operator/=(const Tn& rhs) {
+		vec[0] /= rhs;
+		vec[1] /= rhs;
+		vec[2] /= rhs;
+		vec[3] /= rhs;
+		return *this;
+	}
+
+	template<typename Tn>
+	Vec4& Vec4::operator*=(const Tn& rhs) {
+		vec[0] *= rhs;
+		vec[1] *= rhs;
+		vec[2] *= rhs;
+		vec[3] *= rhs;
+		return *this;
+	}
+
+	Vec4 Vec4::operator+(const Vec4& rhs) {
+		return Vec4(
+			vec[0] + rhs[0],
+			vec[1] + rhs[1],
+			vec[2] + rhs[2],
+			vec[3] + rhs[3]
 		);
 	}
 
-	float Vec3::magnitude() const {
-		return (float)sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
-	}
-
-	float Vec3::dot(const Vec3& in) const {
-		return this->x * in.x + this->y * in.y + this->z * in.z;
-	}
-
-	Vec3 Vec3::cross(const Vec3& in) const {
-		return Vec3(
-			this->y * in.z - in.y * this->z,
-			this->z * in.x - in.z * this->x,
-			this->x * in.y - in.x * this->y
+	Vec4 Vec4::operator-(const Vec4& rhs) {
+		return Vec4(
+			vec[0] - rhs[0],
+			vec[1] - rhs[1],
+			vec[2] - rhs[2],
+			vec[3] - rhs[3]
 		);
 	}
 
-	float Vec3::anglerad(const Vec3& in) const {
-		float res = acos(this->dot(in) / (this->magnitude() * in.magnitude()));
-		if (res > pi)	{ return (float)(res - pi); }
-		else			{ return res; }
+	template<typename Tn>
+	Vec4 Vec4::operator/(const Tn& rhs) {
+		return Vec4(
+			vec[0] / rhs,
+			vec[1] / rhs,
+			vec[2] / rhs,
+			vec[3] / rhs
+		);
 	}
 
-	float Vec3::angledeg(const Vec3& in) const {
-		return (float)(anglerad(in) * 180.f / pi);
-	}
-
-	void Vec3::normalize() {
-		*this /= this->magnitude();
-	}
-
-	std::string Vec3::to_string() const {
-		return std::string(
-			"{" +
-			std::to_string(x) + ";" +
-			std::to_string(y) + ";" +
-			std::to_string(z) + ";" +
-			"}"
+	template<typename Tn>
+	Vec4 Vec4::operator*(const Tn& rhs) {
+		return Vec4(
+			vec[0] * rhs,
+			vec[1] * rhs,
+			vec[2] * rhs,
+			vec[3] * rhs
 		);
 	}
 }
