@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace VecLib {
 	class Vec3 {
 	public:
@@ -31,13 +33,16 @@ namespace VecLib {
 		template<typename T>
 		Vec3& operator*=(const T& rhs);
 
-
+		std::string to_string() const;
 
 		float magnitude() const;
-		float dot(const Vec3& in);
-		Vec3 cross(const Vec3& in);
-		float anglerad(const Vec3& in);
-		float angledeg(const Vec3& in);
+		float dot(const Vec3& in) const;
+		Vec3 cross(const Vec3& in) const;
+		float anglerad(const Vec3& in) const;
+		float angledeg(const Vec3& in) const;
 		void normalize();
+
+	private:
+		void swap(Vec3& rhs) noexcept;
 	};
 }
