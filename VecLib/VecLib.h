@@ -21,16 +21,16 @@ namespace VecLib {
 			Vec(float x) : Vec() {
 				vec[0] = x;
 			}
-			Vec(float x, float y) {
+			Vec(float x, float y) : Vec() {
 				vec[0] = x;
 				vec[1] = y;
 			}
-			Vec(float x, float y, float z) {
+			Vec(float x, float y, float z) : Vec() {
 				vec[0] = x;
 				vec[1] = y;
 				vec[2] = z;
 			}
-			Vec(float x, float y, float z, float w) {
+			Vec(float x, float y, float z, float w) : Vec() {
 				vec[0] = x;
 				vec[1] = y;
 				vec[2] = z;
@@ -56,7 +56,7 @@ namespace VecLib {
 				return sqrt(res);
 			}
 
-			double dot(const T& in) {
+			double dot(const T& in) const {
 				double res = .0f;
 				size_t i = 0;
 				for (const auto & n : vec) {
@@ -76,7 +76,7 @@ namespace VecLib {
 			}
 
 			void normalize() {
-				double m = this->magnitude();
+				float m = (float)this->magnitude();
 				for (auto& n : vec) {
 					n /= m;
 				}
@@ -118,7 +118,7 @@ namespace VecLib {
 		};
 	}
 
-	class Vec3 : protected Vec<Vec3, 3> {
+	class Vec3 : public Vec<Vec3, 3> {
 	public:
 		Vec3() : Vec() {};
 		Vec3(float x) : Vec(x) {};
@@ -146,7 +146,7 @@ namespace VecLib {
 	};
 	
 
-	class Vec4 : protected Vec<Vec4, 4> {
+	class Vec4 : public Vec<Vec4, 4> {
 	public:
 		Vec4() : Vec() {};
 		Vec4(float x) : Vec(x) {};
