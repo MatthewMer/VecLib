@@ -12,25 +12,26 @@ namespace VecLib {
 	namespace {
 		const double pi = 3.14159265358979323846;
 
-		template<class T, size_t Sn>
+		template<class T>
 		class Vec {
 		public:
-			Vec() {
+			Vec() = default;
+			Vec(size_t Sn) {
 				vec = std::vector<float>(Sn, .0f);
 			}
-			Vec(float x) : Vec() {
+			Vec(size_t Sn, float x) : Vec(Sn) {
 				vec[0] = x;
 			}
-			Vec(float x, float y) : Vec() {
+			Vec(size_t Sn, float x, float y) : Vec(Sn) {
 				vec[0] = x;
 				vec[1] = y;
 			}
-			Vec(float x, float y, float z) : Vec() {
+			Vec(size_t Sn, float x, float y, float z) : Vec(Sn) {
 				vec[0] = x;
 				vec[1] = y;
 				vec[2] = z;
 			}
-			Vec(float x, float y, float z, float w) : Vec() {
+			Vec(size_t Sn, float x, float y, float z, float w) : Vec(Sn) {
 				vec[0] = x;
 				vec[1] = y;
 				vec[2] = z;
@@ -91,10 +92,10 @@ namespace VecLib {
 				T res = T();
 
 				std::vector<std::vector<float>> mat;
-				(insert(mat, in), ...);
+				(mat.push_back(in), ...);
 
-				for (size_t row = 0; row < Sn; row++) {
-					for (size_t i = 0; i < Sn; i++) {
+				for (size_t row = 0; row < vec.size(); row++) {
+					for (size_t i = 0; i < vec.size(); i++) {
 
 					}
 				}
@@ -102,28 +103,74 @@ namespace VecLib {
 
 		protected:
 			std::vector<float> vec;
-
-			void insert(std::vector<std::vector<float>>& mat, const T& in) {
-				mat.push_back(in.vec);
-
-			// testing only
-				std::cout << in.to_string();
-			}
 		};
 
 		template<class T>
 		class Mat {
 		public:
+			Mat() = default;
+			Mat(size_t Sn, size_t Sm) {
+				mat = std::vector<std::vector<float>>(Sn, std::vector<float>(Sm, .0f));
+			}
+			Mat(size_t Sn, size_t Sm, std::vector<float> x) : Mat(Sn, Sm) {
+				mat[0] = x.resize(Sm);
+			}
+			Mat(size_t Sn, size_t Sm, std::vector<float> x, std::vector<float> y) : Mat(Sn, Sm) {
+				mat[0] = x.resize(Sm);
+				mat[1] = y.resize(Sm);
+			}
+			Mat(size_t Sn, size_t Sm, std::vector<float> x, std::vector<float> y, std::vector<float> z) : Mat(Sn, Sm) {
+				mat[0] = x.resize(Sm);
+				mat[1] = y.resize(Sm);
+				mat[2] = z.resize(Sm);
+			}
+			Mat(size_t Sn, size_t Sm, std::vector<float> x, std::vector<float> y, std::vector<float> z, std::vector<float> w) : Mat(Sn, Sm) {
+				mat[0] = x.resize(Sm);
+				mat[1] = y.resize(Sm);
+				mat[2] = z.resize(Sm);
+				mat[3] = w.resize(Sm);
+			}
 
+		protected:
+			std::vector<std::vector<float>> mat;
 		};
 	}
 
-	class Vec3 : public Vec<Vec3, 3> {
+	class Vec2 : public Vec<Vec2> {
 	public:
-		Vec3() : Vec() {};
-		Vec3(float x) : Vec(x) {};
-		Vec3(float x, float y) : Vec(x, y) {};
-		Vec3(float x, float y, float z) : Vec(x, y, z) {};
+		Vec2() : Vec(2) {};
+		Vec2(float x) : Vec(2, x) {};
+		Vec2(float x, float y) : Vec(2, x, y) {};
+		Vec2(const Vec2& in) {
+			*this = in;
+		};
+
+		float& operator[](size_t idx);
+		const float& operator[](size_t idx) const;
+		Vec2& operator=(const Vec2& rhs);
+		Vec2& operator+=(const Vec2& rhs);
+		Vec2& operator-=(const Vec2& rhs);
+		Vec2 operator+(const Vec2& rhs);
+		Vec2 operator-(const Vec2& rhs);
+		template<typename Tn>
+		Vec2 operator/(const Tn& rhs);
+		template<typename Tn>
+		Vec2 operator*(const Tn& rhs);
+		template<typename Tn>
+		Vec2& operator/=(const Tn& rhs);
+		template<typename Tn>
+		Vec2& operator*=(const Tn& rhs);
+	};
+
+	class Vec3 : public Vec<Vec3> {
+	public:
+		Vec3() : Vec(3) {};
+		Vec3(float x) : Vec(3, x) {};
+		Vec3(float x, float y) : Vec(3, x, y) {};
+		Vec3(float x, float y, float z) : Vec(3, x, y, z) {};
+		Vec3(const Vec2& in) {
+			*this = Vec3(in[0], in[1], .0f);
+		}
 		Vec3(const Vec3& in) {
 			*this = in;
 		};
@@ -146,18 +193,21 @@ namespace VecLib {
 	};
 	
 
-	class Vec4 : public Vec<Vec4, 4> {
+	class Vec4 : public Vec<Vec4> {
 	public:
-		Vec4() : Vec() {};
-		Vec4(float x) : Vec(x) {};
-		Vec4(float x, float y) : Vec(x, y) {};
-		Vec4(float x, float y, float z) : Vec(x, y, z) {};
-		Vec4(float x, float y, float z, float w) : Vec(x, y, z, w) {};
-		Vec4(const Vec4& in) {
-			*this = in;
+		Vec4() : Vec(4) {};
+		Vec4(float x) : Vec(4, x) {};
+		Vec4(float x, float y) : Vec(4, x, y) {};
+		Vec4(float x, float y, float z) : Vec(4, x, y, z) {};
+		Vec4(float x, float y, float z, float w) : Vec(4, x, y, z, w) {};
+		Vec4(const Vec2& in) {
+			*this = Vec4(in[0], in[1], .0f, .0f);
 		}
 		Vec4(const Vec3& in) {
 			*this = Vec4(in[0], in[1], in[2], .0f);
+		}
+		Vec4(const Vec4& in) {
+			*this = in;
 		}
 
 		float& operator[](size_t idx);
@@ -176,12 +226,28 @@ namespace VecLib {
 		template<typename Tn>
 		Vec4& operator*=(const Tn& rhs);
 	};
-
-	class Mat3 : Mat<Mat3> {
-
+	
+	class MatNM : public Mat<MatNM> {
+	public:
+		std::vector<float>& operator[](size_t idx);
+		const std::vector<float>& operator[](size_t idx) const;
+	};
+	
+	class Mat2 : public Mat<Mat2> {
+	public:
+		std::vector<float>& operator[](size_t idx);
+		const std::vector<float>& operator[](size_t idx) const;
 	};
 
-	class Mat4 : Mat<Mat4> {
+	class Mat3 : public Mat<Mat3> {
+	public:
+		std::vector<float>& operator[](size_t idx);
+		const std::vector<float>& operator[](size_t idx) const;
+	};
 
+	class Mat4 : public Mat<Mat4> {
+	public:
+		std::vector<float>& operator[](size_t idx);
+		const std::vector<float>& operator[](size_t idx) const;
 	};
 }

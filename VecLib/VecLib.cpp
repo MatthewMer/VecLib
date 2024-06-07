@@ -39,6 +39,88 @@ namespace VecLib {
 		*/
 	}
 
+	/*
+	*
+	*	Vector 2
+	*
+	*/
+
+	float& Vec2::operator[](size_t idx) {
+		return vec[idx];
+	}
+
+	const float& Vec2::operator[](size_t idx) const {
+		return vec[idx];
+	}
+
+	Vec2& Vec2::operator=(const Vec2& rhs) {
+		Vec2 temp(rhs);
+		swap(*this, temp);
+		return *this;
+	}
+
+	Vec2& Vec2::operator+=(const Vec2& rhs) {
+		vec[0] += rhs[0];
+		vec[1] += rhs[1];
+		return *this;
+	}
+
+	Vec2& Vec2::operator-=(const Vec2& rhs) {
+		vec[0] -= rhs[0];
+		vec[1] -= rhs[1];
+		return *this;
+	}
+
+	template<typename Tn>
+	Vec2& Vec2::operator/=(const Tn& rhs) {
+		vec[0] /= rhs;
+		vec[1] /= rhs;
+		return *this;
+	}
+
+	template<typename Tn>
+	Vec2& Vec2::operator*=(const Tn& rhs) {
+		vec[0] *= rhs;
+		vec[1] *= rhs;
+		return *this;
+	}
+
+	Vec2 Vec2::operator+(const Vec2& rhs) {
+		return Vec2(
+			vec[0] + rhs[0],
+			vec[1] + rhs[1]
+		);
+	}
+
+	Vec2 Vec2::operator-(const Vec2& rhs) {
+		return Vec2(
+			vec[0] - rhs[0],
+			vec[1] - rhs[1]
+		);
+	}
+
+	template<typename Tn>
+	Vec2 Vec2::operator/(const Tn& rhs) {
+		return Vec2(
+			vec[0] / rhs,
+			vec[1] / rhs
+		);
+	}
+
+	template<typename Tn>
+	Vec2 Vec2::operator*(const Tn& rhs) {
+		return Vec2(
+			vec[0] * rhs,
+			vec[1] * rhs
+		);
+	}
+
+	/*
+	*
+	*	Vector 3
+	*
+	*/
+
 	float& Vec3::operator[](size_t idx) {
 		return vec[idx];
 	}
@@ -117,6 +199,11 @@ namespace VecLib {
 		);
 	}
 	
+	/*
+	*
+	*	Vector 4
+	*
+	*/
 
 	float& Vec4::operator[](size_t idx) {
 		return vec[idx];
@@ -202,5 +289,61 @@ namespace VecLib {
 			vec[2] * rhs,
 			vec[3] * rhs
 		);
+	}
+
+	/*
+	*
+	*	Matrix NxM
+	*
+	*/
+	
+	std::vector<float>& MatNM::operator[](size_t idx) {
+		return mat[idx];
+	}
+
+	const std::vector<float>& MatNM::operator[](size_t idx) const {
+		return mat[idx];
+	}
+
+	/*
+	*
+	*	Matrix 2
+	*
+	*/
+
+	std::vector<float>& Mat2::operator[](size_t idx) {
+		return mat[idx];
+	}
+
+	const std::vector<float>& Mat2::operator[](size_t idx) const {
+		return mat[idx];
+	}
+
+	/*
+	*
+	*	Matrix 3
+	*
+	*/
+
+	std::vector<float>& Mat3::operator[](size_t idx) {
+		return mat[idx];
+	}
+
+	const std::vector<float>& Mat3::operator[](size_t idx) const {
+		return mat[idx];
+	}
+
+	/*
+	*
+	*	Matrix 4
+	*
+	*/
+
+	std::vector<float>& Mat4::operator[](size_t idx) {
+		return mat[idx];
+	}
+
+	const std::vector<float>& Mat4::operator[](size_t idx) const {
+		return mat[idx];
 	}
 }
