@@ -87,6 +87,7 @@ namespace VecLib {
 				return vec;
 			}
 
+			/*
 			template<class ...Ts>
 			T cross(Ts &&...in) {
 				T res = T();
@@ -100,6 +101,7 @@ namespace VecLib {
 					}
 				}
 			}
+			*/
 
 		protected:
 			std::vector<float> vec;
@@ -147,20 +149,38 @@ namespace VecLib {
 
 		float& operator[](size_t idx);
 		const float& operator[](size_t idx) const;
-		Vec2& operator=(const Vec2& rhs);
+		Vec2& operator=(Vec2 rhs);
 		Vec2& operator+=(const Vec2& rhs);
 		Vec2& operator-=(const Vec2& rhs);
-		Vec2 operator+(const Vec2& rhs);
-		Vec2 operator-(const Vec2& rhs);
-		template<typename Tn>
-		Vec2 operator/(const Tn& rhs);
-		template<typename Tn>
-		Vec2 operator*(const Tn& rhs);
+		
 		template<typename Tn>
 		Vec2& operator/=(const Tn& rhs);
 		template<typename Tn>
 		Vec2& operator*=(const Tn& rhs);
 	};
+
+	inline Vec2 operator+(const Vec2& lhs, const Vec2& rhs) {
+		Vec2 res = lhs;
+		res += rhs;
+		return res;
+	}
+	inline Vec2 operator-(const Vec2& lhs, const Vec2& rhs) {
+		Vec2 res = lhs;
+		res -= rhs;
+		return res;
+	}
+	template<typename Tn>
+	inline Vec2 operator*(const Vec2& lhs, const Tn& rhs) {
+		Vec2 res = lhs;
+		res *= rhs;
+		return res;
+	}
+	template<typename Tn>
+	inline Vec2 operator/(const Vec2& lhs, const Tn& rhs) {
+		Vec2 res = lhs;
+		res /= rhs;
+		return res;
+	}
 
 	class Vec3 : public Vec<Vec3> {
 	public:

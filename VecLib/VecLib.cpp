@@ -5,6 +5,7 @@
 #include "framework.h"
 
 #include "VecLib.h"
+#include <algorithm>
 
 namespace VecLib {
 	namespace {
@@ -53,9 +54,8 @@ namespace VecLib {
 		return vec[idx];
 	}
 
-	Vec2& Vec2::operator=(const Vec2& rhs) {
-		Vec2 temp(rhs);
-		swap(*this, temp);
+	Vec2& Vec2::operator=(Vec2 rhs) {
+		std::swap(*this, rhs);
 		return *this;
 	}
 
@@ -72,47 +72,17 @@ namespace VecLib {
 	}
 
 	template<typename Tn>
-	Vec2& Vec2::operator/=(const Tn& rhs) {
-		vec[0] /= rhs;
-		vec[1] /= rhs;
-		return *this;
-	}
-
-	template<typename Tn>
 	Vec2& Vec2::operator*=(const Tn& rhs) {
 		vec[0] *= rhs;
 		vec[1] *= rhs;
 		return *this;
 	}
 
-	Vec2 Vec2::operator+(const Vec2& rhs) {
-		return Vec2(
-			vec[0] + rhs[0],
-			vec[1] + rhs[1]
-		);
-	}
-
-	Vec2 Vec2::operator-(const Vec2& rhs) {
-		return Vec2(
-			vec[0] - rhs[0],
-			vec[1] - rhs[1]
-		);
-	}
-
 	template<typename Tn>
-	Vec2 Vec2::operator/(const Tn& rhs) {
-		return Vec2(
-			vec[0] / rhs,
-			vec[1] / rhs
-		);
-	}
-
-	template<typename Tn>
-	Vec2 Vec2::operator*(const Tn& rhs) {
-		return Vec2(
-			vec[0] * rhs,
-			vec[1] * rhs
-		);
+	Vec2& Vec2::operator/=(const Tn& rhs) {
+		vec[0] /= rhs;
+		vec[1] /= rhs;
+		return *this;
 	}
 
 	/*
