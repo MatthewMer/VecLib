@@ -16,22 +16,22 @@ namespace VecLib {
 		class Vec {
 		public:
 			Vec() = default;
-			Vec(size_t Sn) {
-				vec = std::vector<float>(Sn, .0f);
+			Vec(const size_t& Sn) {
+				vec = std::vector<T>(Sn, 0);
 			}
-			Vec(size_t Sn, float x) : Vec(Sn) {
+			Vec(const size_t& Sn, const T& x) : Vec(Sn) {
 				vec[0] = x;
 			}
-			Vec(size_t Sn, float x, float y) : Vec(Sn) {
+			Vec(const size_t& Sn, const T& x, const T& y) : Vec(Sn) {
 				vec[0] = x;
 				vec[1] = y;
 			}
-			Vec(size_t Sn, float x, float y, float z) : Vec(Sn) {
+			Vec(const size_t& Sn, const T& x, const T& y, const T& z) : Vec(Sn) {
 				vec[0] = x;
 				vec[1] = y;
 				vec[2] = z;
 			}
-			Vec(size_t Sn, float x, float y, float z, float w) : Vec(Sn) {
+			Vec(const size_t& Sn, const T& x, const T& y, const T& z, const T& w) : Vec(Sn) {
 				vec[0] = x;
 				vec[1] = y;
 				vec[2] = z;
@@ -57,7 +57,8 @@ namespace VecLib {
 				return sqrt(res);
 			}
 
-			double dot(const T& in) const {
+			template <class T_>
+			double dot(const T_& in) const {
 				double res = .0f;
 				size_t i = 0;
 				for (const auto & n : vec) {
@@ -66,24 +67,24 @@ namespace VecLib {
 				return res;
 			}
 
-			double anglerad(const T& in) const {
+			double anglerad(const Vec& in) const {
 				double res = acos(this->dot(in) / (this->magnitude() * in.magnitude()));
 				if (res > pi)	{ return res - pi; } 
 				else			{ return res; }
 			}
 
-			double angledeg(const T& in) const {
+			double angledeg(const Vec& in) const {
 				return this->anglerad(in) * 180.f / pi;
 			}
 
 			void normalize() {
-				float m = (float)this->magnitude();
+				auto m = this->magnitude();
 				for (auto& n : vec) {
 					n /= m;
 				}
 			}
 
-			std::vector<float> as_vector() {
+			const std::vector<float>& as_container() {
 				return vec;
 			}
 
@@ -103,10 +104,72 @@ namespace VecLib {
 			}
 			*/
 
+			friend bool operator==(const Vec& lhs, const Vec& rhs) {
+				for (size_t i = 0; i < lhs.vec.size(); ++i) {
+					if (lhs.vec[i] != rhs.vec[i]) { return false; }
+				}
+				return true;
+			}
+
+			friend bool operator!=(const Vec& lhs, const Vec& rhs) {
+				for (size_t i = 0; i < lhs.vec.size(); ++i) {
+					if (lhs.vec[i] != rhs.vec[i]) { return true; }
+				}
+				return false;
+			}
+
+			friend bool operator>=(const Vec& lhs, const Vec& rhs) {
+				return lhs.magnitude() >= rhs.magnitude();
+			}
+
+			friend bool operator<=(const Vec& lhs, const Vec& rhs) {
+				return lhs.magnitude() <= rhs.magnitude();
+			}
+
+			friend bool operator>(const Vec& lhs, const Vec& rhs) {
+				return lhs.magnitude() > rhs.magnitude();
+			}
+
+			friend bool operator<(const Vec& lhs, const Vec& rhs) {
+				return lhs.magnitude() < rhs.magnitude();
+			}
+
+
+			Vec& operator+=(const Vec& rhs) {
+				for (size_t i = 0; i < this->vec.size() && i < rhs.vec.size(); ++i) {
+					this->vec[i] += rhs.vec[i];
+				}
+				return *this;
+			}
+
+			Vec& operator-=(const Vec& rhs) {
+				for (size_t i = 0; i < this->vec.size() && i < rhs.vec.size(); ++i) {
+					this->vec[i] -= rhs.vec[i];
+				}
+				return *this;
+			}
+
+			Vec& operator*=(const double& rhs) {
+				for (size_t i = 0; i < this->vec.size(); ++i) {
+					this->vec[i] *= rhs;
+				}
+				return *this;
+			}
+
+			Vec& operator/=(const double& rhs) {
+				for (size_t i = 0; i < this->vec.size(); ++i) {
+					this->vec[i] /= rhs;
+				}
+				return *this;
+			}
+
 		protected:
-			std::vector<float> vec;
+			std::vector<T> vec;
 		};
 
+		
+
+		/*
 		template<class T>
 		class Mat {
 		public:
@@ -134,54 +197,105 @@ namespace VecLib {
 			}
 
 		protected:
-			std::vector<std::vector<float>> mat;
+			std::vector<std::vector<T>> mat;
 		};
+		*/
 	}
 
-	class Vec2 : public Vec<Vec2> {
+	template <class T>
+	class Vec2 : public Vec<T> {
 	public:
-		Vec2() : Vec(2) {};
-		Vec2(float x) : Vec(2, x) {};
-		Vec2(float x, float y) : Vec(2, x, y) {};
-		Vec2(const Vec2& in) {
-			*this = in;
+		Vec2() : Vec<T>(2) {};
+		Vec2(const T& x) : Vec<T>(2, x) {};
+		Vec2(const T& x, const T& y) : Vec<T>(2, x, y) {};
+		~Vec2() = default;
+
+		Vec2(const Vec2& other) : Vec<T>(2) {
+			std::copy(other.vec.begin(), other.vec.end(), this->vec.begin());
+		};
+		Vec2(Vec2&& other) noexcept {
+			this->vec = std::move(other.vec);
 		};
 
-		float& operator[](size_t idx);
-		const float& operator[](size_t idx) const;
-		Vec2& operator=(Vec2 rhs);
-		Vec2& operator+=(const Vec2& rhs);
-		Vec2& operator-=(const Vec2& rhs);
-		
-		template<typename Tn>
-		Vec2& operator/=(const Tn& rhs);
-		template<typename Tn>
-		Vec2& operator*=(const Tn& rhs);
+		T& operator[](size_t idx);
+		const T& operator[](size_t idx) const;
+
+		Vec2<T>& operator=(const Vec2& rhs);
+		Vec2<T>& operator=(Vec2<T>&& rhs) noexcept;
+		/*
+		Vec2<T>& operator+=(const Vec2& rhs);
+		Vec2<T>& operator-=(const Vec2& rhs);
+		Vec2<T>& operator/=(const double& rhs);
+		Vec2<T>& operator*=(const double& rhs);
+		*/
+		friend Vec2 operator+(const Vec2& lhs, const Vec2& rhs) {
+			return Vec2(lhs[0] + rhs[0], lhs[1] + rhs[1]);
+		}
+		friend Vec2 operator-(const Vec2& lhs, const Vec2& rhs) {
+			return Vec2(lhs[0] - rhs[0], lhs[1] - rhs[1]);
+		}
+		friend Vec2 operator/(const Vec2& lhs, const double& rhs) {
+			return Vec2(lhs[0] / rhs, lhs[1] / rhs);
+		}
+		friend Vec2 operator*(const Vec2& lhs, const double& rhs) {
+			return Vec2(lhs[0] * rhs, lhs[1] * rhs);
+		}
 	};
 
-	inline Vec2 operator+(const Vec2& lhs, const Vec2& rhs) {
-		Vec2 res = lhs;
-		res += rhs;
-		return res;
-	}
-	inline Vec2 operator-(const Vec2& lhs, const Vec2& rhs) {
-		Vec2 res = lhs;
-		res -= rhs;
-		return res;
-	}
-	template<typename Tn>
-	inline Vec2 operator*(const Vec2& lhs, const Tn& rhs) {
-		Vec2 res = lhs;
-		res *= rhs;
-		return res;
-	}
-	template<typename Tn>
-	inline Vec2 operator/(const Vec2& lhs, const Tn& rhs) {
-		Vec2 res = lhs;
-		res /= rhs;
-		return res;
+	template <class T>
+	T& Vec2<T>::operator[](size_t idx) {
+		return this->vec[idx];
 	}
 
+	template <class T>
+	const T& Vec2<T>::operator[](size_t idx) const {
+		return this->vec[idx];
+	}
+
+	template <class T>
+	Vec2<T>& Vec2<T>::operator=(const Vec2& rhs) {
+		std::copy(rhs.vec.begin(), rhs.vec.end(), this->vec.begin());
+		return *this;
+	}
+
+	template <class T>
+	Vec2<T>& Vec2<T>::operator=(Vec2<T>&& rhs) noexcept {
+		if (this != &rhs) {
+			this->vec = std::move(rhs.vec);
+		}
+		return *this;
+	}
+	/*
+	template <class T>
+	Vec2<T>& Vec2<T>::operator+=(const Vec2& rhs) {
+		std::transform(rhs.vec.begin(), rhs.vec.end(), this->vec.begin(), )
+		this->vec[0] += rhs[0];
+		this->vec[1] += rhs[1];
+		return *this;
+	}
+
+	template <class T>
+	Vec2<T>& Vec2<T>::operator-=(const Vec2& rhs) {
+		this->vec[0] -= rhs[0];
+		this->vec[1] -= rhs[1];
+		return *this;
+	}
+
+	template <class T>
+	Vec2<T>& Vec2<T>::operator*=(const double& rhs) {
+		this->vec[0] *= rhs;
+		this->vec[1] *= rhs;
+		return *this;
+	}
+
+	template <class T>
+	Vec2<T>& Vec2<T>::operator/=(const double& rhs) {
+		this->vec[0] /= rhs;
+		this->vec[1] /= rhs;
+		return *this;
+	}
+	*/
+	/*
 	class Vec3 : public Vec<Vec3> {
 	public:
 		Vec3() : Vec(3) {};
@@ -212,7 +326,6 @@ namespace VecLib {
 		Vec3& operator*=(const Tn& rhs);
 	};
 	
-
 	class Vec4 : public Vec<Vec4> {
 	public:
 		Vec4() : Vec(4) {};
@@ -270,4 +383,5 @@ namespace VecLib {
 		std::vector<float>& operator[](size_t idx);
 		const std::vector<float>& operator[](size_t idx) const;
 	};
+	*/
 }

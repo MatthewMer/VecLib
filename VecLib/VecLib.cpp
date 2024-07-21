@@ -46,51 +46,14 @@ namespace VecLib {
 	*
 	*/
 
-	float& Vec2::operator[](size_t idx) {
-		return vec[idx];
-	}
-
-	const float& Vec2::operator[](size_t idx) const {
-		return vec[idx];
-	}
-
-	Vec2& Vec2::operator=(Vec2 rhs) {
-		std::swap(*this, rhs);
-		return *this;
-	}
-
-	Vec2& Vec2::operator+=(const Vec2& rhs) {
-		vec[0] += rhs[0];
-		vec[1] += rhs[1];
-		return *this;
-	}
-
-	Vec2& Vec2::operator-=(const Vec2& rhs) {
-		vec[0] -= rhs[0];
-		vec[1] -= rhs[1];
-		return *this;
-	}
-
-	template<typename Tn>
-	Vec2& Vec2::operator*=(const Tn& rhs) {
-		vec[0] *= rhs;
-		vec[1] *= rhs;
-		return *this;
-	}
-
-	template<typename Tn>
-	Vec2& Vec2::operator/=(const Tn& rhs) {
-		vec[0] /= rhs;
-		vec[1] /= rhs;
-		return *this;
-	}
+	
 
 	/*
 	*
 	*	Vector 3
 	*
 	*/
-
+	/*
 	float& Vec3::operator[](size_t idx) {
 		return vec[idx];
 	}
@@ -174,7 +137,7 @@ namespace VecLib {
 	*	Vector 4
 	*
 	*/
-
+	/*
 	float& Vec4::operator[](size_t idx) {
 		return vec[idx];
 	}
@@ -266,7 +229,7 @@ namespace VecLib {
 	*	Matrix NxM
 	*
 	*/
-	
+	/*
 	std::vector<float>& MatNM::operator[](size_t idx) {
 		return mat[idx];
 	}
@@ -280,7 +243,7 @@ namespace VecLib {
 	*	Matrix 2
 	*
 	*/
-
+	/*
 	std::vector<float>& Mat2::operator[](size_t idx) {
 		return mat[idx];
 	}
@@ -294,7 +257,7 @@ namespace VecLib {
 	*	Matrix 3
 	*
 	*/
-
+	/*
 	std::vector<float>& Mat3::operator[](size_t idx) {
 		return mat[idx];
 	}
@@ -308,7 +271,7 @@ namespace VecLib {
 	*	Matrix 4
 	*
 	*/
-
+	/*
 	std::vector<float>& Mat4::operator[](size_t idx) {
 		return mat[idx];
 	}
@@ -316,4 +279,5 @@ namespace VecLib {
 	const std::vector<float>& Mat4::operator[](size_t idx) const {
 		return mat[idx];
 	}
+	*/
 }
