@@ -1,37 +1,34 @@
 #pragma once
 
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <string>
 #include <vector>
 #include <array>
 #include <stdexcept>
-#include <cmath>
-
-#include <iostream>
 
 namespace VecLib {
 	namespace {
-		const double pi = 3.14159265358979323846;
-
 		template<class T>
-		class Vec {
+		class Vector {
 		public:
-			Vec() = default;
-			Vec(const size_t& Sn) {
+			Vector() = default;
+			Vector(const size_t& Sn) {
 				vec = std::vector<T>(Sn, 0);
 			}
-			Vec(const size_t& Sn, const T& x) : Vec(Sn) {
+			Vector(const size_t& Sn, const T& x) : Vector(Sn) {
 				vec[0] = x;
 			}
-			Vec(const size_t& Sn, const T& x, const T& y) : Vec(Sn) {
+			Vector(const size_t& Sn, const T& x, const T& y) : Vector(Sn) {
 				vec[0] = x;
 				vec[1] = y;
 			}
-			Vec(const size_t& Sn, const T& x, const T& y, const T& z) : Vec(Sn) {
+			Vector(const size_t& Sn, const T& x, const T& y, const T& z) : Vector(Sn) {
 				vec[0] = x;
 				vec[1] = y;
 				vec[2] = z;
 			}
-			Vec(const size_t& Sn, const T& x, const T& y, const T& z, const T& w) : Vec(Sn) {
+			Vector(const size_t& Sn, const T& x, const T& y, const T& z, const T& w) : Vector(Sn) {
 				vec[0] = x;
 				vec[1] = y;
 				vec[2] = z;
@@ -57,24 +54,25 @@ namespace VecLib {
 				return sqrt(res);
 			}
 
-			template <class T_>
-			double dot(const T_& in) const {
+			double dot(const Vector& in) const {
 				double res = .0f;
 				size_t i = 0;
+				size_t M = in.vec.size();
 				for (const auto & n : vec) {
-					res += n * in[i++];
+					res += n * in.vec[i % M];
+					++i;
 				}
 				return res;
 			}
 
-			double anglerad(const Vec& in) const {
+			double anglerad(const Vector& in) const {
 				double res = acos(this->dot(in) / (this->magnitude() * in.magnitude()));
-				if (res > pi)	{ return res - pi; } 
+				if (res > M_PI)	{ return res - M_PI; }
 				else			{ return res; }
 			}
 
-			double angledeg(const Vec& in) const {
-				return this->anglerad(in) * 180.f / pi;
+			double angledeg(const Vector& in) const {
+				return this->anglerad(in) * 180.f / M_PI;
 			}
 
 			void normalize() {
@@ -104,63 +102,71 @@ namespace VecLib {
 			}
 			*/
 
-			friend bool operator==(const Vec& lhs, const Vec& rhs) {
+			friend bool operator==(const Vector& lhs, const Vector& rhs) {
 				for (size_t i = 0; i < lhs.vec.size(); ++i) {
 					if (lhs.vec[i] != rhs.vec[i]) { return false; }
 				}
 				return true;
 			}
 
-			friend bool operator!=(const Vec& lhs, const Vec& rhs) {
+			friend bool operator!=(const Vector& lhs, const Vector& rhs) {
 				for (size_t i = 0; i < lhs.vec.size(); ++i) {
 					if (lhs.vec[i] != rhs.vec[i]) { return true; }
 				}
 				return false;
 			}
 
-			friend bool operator>=(const Vec& lhs, const Vec& rhs) {
+			friend bool operator>=(const Vector& lhs, const Vector& rhs) {
 				return lhs.magnitude() >= rhs.magnitude();
 			}
 
-			friend bool operator<=(const Vec& lhs, const Vec& rhs) {
+			friend bool operator<=(const Vector& lhs, const Vector& rhs) {
 				return lhs.magnitude() <= rhs.magnitude();
 			}
 
-			friend bool operator>(const Vec& lhs, const Vec& rhs) {
+			friend bool operator>(const Vector& lhs, const Vector& rhs) {
 				return lhs.magnitude() > rhs.magnitude();
 			}
 
-			friend bool operator<(const Vec& lhs, const Vec& rhs) {
+			friend bool operator<(const Vector& lhs, const Vector& rhs) {
 				return lhs.magnitude() < rhs.magnitude();
 			}
 
 
-			Vec& operator+=(const Vec& rhs) {
+			Vector& operator+=(const Vector& rhs) {
 				for (size_t i = 0; i < this->vec.size() && i < rhs.vec.size(); ++i) {
 					this->vec[i] += rhs.vec[i];
 				}
 				return *this;
 			}
 
-			Vec& operator-=(const Vec& rhs) {
+			Vector& operator-=(const Vector& rhs) {
 				for (size_t i = 0; i < this->vec.size() && i < rhs.vec.size(); ++i) {
 					this->vec[i] -= rhs.vec[i];
 				}
 				return *this;
 			}
 
-			Vec& operator*=(const double& rhs) {
+			Vector& operator*=(const double& rhs) {
 				for (size_t i = 0; i < this->vec.size(); ++i) {
 					this->vec[i] *= rhs;
 				}
 				return *this;
 			}
 
-			Vec& operator/=(const double& rhs) {
+			Vector& operator/=(const double& rhs) {
 				for (size_t i = 0; i < this->vec.size(); ++i) {
 					this->vec[i] /= rhs;
 				}
 				return *this;
+			}
+
+			T& operator[](size_t idx) {
+				return this->vec[idx];
+			}
+
+			const T& operator[](size_t idx) const {
+				return this->vec[idx];
 			}
 
 		protected:
@@ -202,107 +208,71 @@ namespace VecLib {
 		*/
 	}
 
-	template <class T>
-	class Vec2 : public Vec<T> {
+	template <size_t n, class T>
+	class Vec : public Vector<T> {
 	public:
-		Vec2() : Vec<T>(2) {};
-		Vec2(const T& x) : Vec<T>(2, x) {};
-		Vec2(const T& x, const T& y) : Vec<T>(2, x, y) {};
-		~Vec2() = default;
+		Vec() : Vector<T>(n) {};
+		Vec(const T& x) : Vector<T>(n, x) {};
+		Vec(const T& x, const T& y) : Vector<T>(n, x, y) {};
+		Vec(const T& x, const T& y, const T& z) : Vector<T>(n, x, y, z) {};
+		~Vec() = default;
 
-		Vec2(const Vec2& other) : Vec<T>(2) {
+		Vec(const Vec& other) : Vector<T>(n) {
 			std::copy(other.vec.begin(), other.vec.end(), this->vec.begin());
 		};
-		Vec2(Vec2&& other) noexcept {
+		Vec(Vec&& other) noexcept {
 			this->vec = std::move(other.vec);
 		};
 
-		T& operator[](size_t idx);
-		const T& operator[](size_t idx) const;
-
-		Vec2<T>& operator=(const Vec2& rhs);
-		Vec2<T>& operator=(Vec2<T>&& rhs) noexcept;
-		/*
-		Vec2<T>& operator+=(const Vec2& rhs);
-		Vec2<T>& operator-=(const Vec2& rhs);
-		Vec2<T>& operator/=(const double& rhs);
-		Vec2<T>& operator*=(const double& rhs);
-		*/
-		friend Vec2 operator+(const Vec2& lhs, const Vec2& rhs) {
-			return Vec2(lhs[0] + rhs[0], lhs[1] + rhs[1]);
+		Vec<n, T>& operator=(const Vec& rhs);
+		Vec<n, T>& operator=(Vec<n, T>&& rhs) noexcept;
+	
+		friend Vec operator+(const Vec& lhs, const Vec& rhs) {
+			auto res = lhs;
+			res += rhs;
+			return res;
 		}
-		friend Vec2 operator-(const Vec2& lhs, const Vec2& rhs) {
-			return Vec2(lhs[0] - rhs[0], lhs[1] - rhs[1]);
+		friend Vec operator-(const Vec& lhs, const Vec& rhs) {
+			auto res = lhs;
+			res -= rhs;
+			return res;
 		}
-		friend Vec2 operator/(const Vec2& lhs, const double& rhs) {
-			return Vec2(lhs[0] / rhs, lhs[1] / rhs);
+		friend Vec operator*(const Vec& lhs, const double& rhs) {
+			auto res = lhs;
+			res *= rhs;
+			return res;
 		}
-		friend Vec2 operator*(const Vec2& lhs, const double& rhs) {
-			return Vec2(lhs[0] * rhs, lhs[1] * rhs);
+		friend Vec operator/(const Vec& lhs, const double& rhs) {
+			auto res = lhs;
+			res /= rhs;
+			return res;
 		}
+		
 	};
 
-	template <class T>
-	T& Vec2<T>::operator[](size_t idx) {
-		return this->vec[idx];
-	}
-
-	template <class T>
-	const T& Vec2<T>::operator[](size_t idx) const {
-		return this->vec[idx];
-	}
-
-	template <class T>
-	Vec2<T>& Vec2<T>::operator=(const Vec2& rhs) {
+	template <size_t n, class T>
+	Vec<n, T>& Vec<n, T>::operator=(const Vec& rhs) {
 		std::copy(rhs.vec.begin(), rhs.vec.end(), this->vec.begin());
 		return *this;
 	}
 
-	template <class T>
-	Vec2<T>& Vec2<T>::operator=(Vec2<T>&& rhs) noexcept {
+	template <size_t n, class T>
+	Vec<n, T>& Vec<n, T>::operator=(Vec<n, T>&& rhs) noexcept {
 		if (this != &rhs) {
 			this->vec = std::move(rhs.vec);
 		}
 		return *this;
 	}
+
+
 	/*
-	template <class T>
-	Vec2<T>& Vec2<T>::operator+=(const Vec2& rhs) {
-		std::transform(rhs.vec.begin(), rhs.vec.end(), this->vec.begin(), )
-		this->vec[0] += rhs[0];
-		this->vec[1] += rhs[1];
-		return *this;
-	}
-
-	template <class T>
-	Vec2<T>& Vec2<T>::operator-=(const Vec2& rhs) {
-		this->vec[0] -= rhs[0];
-		this->vec[1] -= rhs[1];
-		return *this;
-	}
-
-	template <class T>
-	Vec2<T>& Vec2<T>::operator*=(const double& rhs) {
-		this->vec[0] *= rhs;
-		this->vec[1] *= rhs;
-		return *this;
-	}
-
-	template <class T>
-	Vec2<T>& Vec2<T>::operator/=(const double& rhs) {
-		this->vec[0] /= rhs;
-		this->vec[1] /= rhs;
-		return *this;
-	}
-	*/
-	/*
-	class Vec3 : public Vec<Vec3> {
+	class Vec3 : public Vector<Vec3> {
 	public:
-		Vec3() : Vec(3) {};
-		Vec3(float x) : Vec(3, x) {};
-		Vec3(float x, float y) : Vec(3, x, y) {};
-		Vec3(float x, float y, float z) : Vec(3, x, y, z) {};
-		Vec3(const Vec2& in) {
+		Vec3() : Vector(3) {};
+		Vec3(float x) : Vector(3, x) {};
+		Vec3(float x, float y) : Vector(3, x, y) {};
+		Vec3(float x, float y, float z) : Vector(3, x, y, z) {};
+		Vec3(const Vec& in) {
 			*this = Vec3(in[0], in[1], .0f);
 		}
 		Vec3(const Vec3& in) {
@@ -326,14 +296,14 @@ namespace VecLib {
 		Vec3& operator*=(const Tn& rhs);
 	};
 	
-	class Vec4 : public Vec<Vec4> {
+	class Vec4 : public Vector<Vec4> {
 	public:
-		Vec4() : Vec(4) {};
-		Vec4(float x) : Vec(4, x) {};
-		Vec4(float x, float y) : Vec(4, x, y) {};
-		Vec4(float x, float y, float z) : Vec(4, x, y, z) {};
-		Vec4(float x, float y, float z, float w) : Vec(4, x, y, z, w) {};
-		Vec4(const Vec2& in) {
+		Vec4() : Vector(4) {};
+		Vec4(float x) : Vector(4, x) {};
+		Vec4(float x, float y) : Vector(4, x, y) {};
+		Vec4(float x, float y, float z) : Vector(4, x, y, z) {};
+		Vec4(float x, float y, float z, float w) : Vector(4, x, y, z, w) {};
+		Vec4(const Vec& in) {
 			*this = Vec4(in[0], in[1], .0f, .0f);
 		}
 		Vec4(const Vec3& in) {
