@@ -6,6 +6,10 @@
 #include <vector>
 #include <array>
 #include <stdexcept>
+#include <cstdarg>
+#include <concepts>
+
+#include <iostream>
 
 namespace VecLib {
 	namespace {
@@ -16,23 +20,27 @@ namespace VecLib {
 			Vector(const size_t& Sn) {
 				vec = std::vector<T>(Sn, 0);
 			}
-			Vector(const size_t& Sn, const T& x) : Vector(Sn) {
-				vec[0] = x;
+			Vector(const size_t& Sn, const std::initializer_list<T>& vals) : Vector(Sn) {
+				size_t i = 0;
+				for (const auto & n : vals) {
+					if (i < Sn) {
+						this->vec[i] = n;
+					}
+					else {
+						break;
+					}
+					++i;
+				}
 			}
-			Vector(const size_t& Sn, const T& x, const T& y) : Vector(Sn) {
-				vec[0] = x;
-				vec[1] = y;
-			}
-			Vector(const size_t& Sn, const T& x, const T& y, const T& z) : Vector(Sn) {
-				vec[0] = x;
-				vec[1] = y;
-				vec[2] = z;
-			}
-			Vector(const size_t& Sn, const T& x, const T& y, const T& z, const T& w) : Vector(Sn) {
-				vec[0] = x;
-				vec[1] = y;
-				vec[2] = z;
-				vec[3] = w;
+			Vector(const size_t& Sn, std::convertible_to<T> auto ...vals) : Vector(Sn)
+			{
+				size_t i = 0;
+				for (const T& n : { T(vals)... }) {
+					if (i < Sn) {
+						this->vec[i] = n;
+					}
+					++i;
+				}
 			}
 
 			std::string to_string() const {
@@ -55,12 +63,12 @@ namespace VecLib {
 			}
 
 			double dot(const Vector& in) const {
-				double res = .0f;
-				size_t i = 0;
+				size_t N = this->vec.size();
 				size_t M = in.vec.size();
-				for (const auto & n : vec) {
-					res += n * in.vec[i % M];
-					++i;
+
+				double res = .0f;
+				for (size_t i = 0; i < (N < M ? M : N); ++i) {
+					res += this->vec[i % N] * in.vec[i % M];
 				}
 				return res;
 			}
@@ -134,14 +142,14 @@ namespace VecLib {
 
 
 			Vector& operator+=(const Vector& rhs) {
-				for (size_t i = 0; i < this->vec.size() && i < rhs.vec.size(); ++i) {
+				for (size_t i = 0; i < this->vec.size(); ++i) {
 					this->vec[i] += rhs.vec[i];
 				}
 				return *this;
 			}
 
 			Vector& operator-=(const Vector& rhs) {
-				for (size_t i = 0; i < this->vec.size() && i < rhs.vec.size(); ++i) {
+				for (size_t i = 0; i < this->vec.size(); ++i) {
 					this->vec[i] -= rhs.vec[i];
 				}
 				return *this;
@@ -167,6 +175,14 @@ namespace VecLib {
 
 			const T& operator[](size_t idx) const {
 				return this->vec[idx];
+			}
+
+			std::vector<T>::iterator begin() {
+				return this->vec.begin();
+			}
+
+			std::vector<T>::iterator end() {
+				return this->vec.end();
 			}
 
 		protected:
@@ -208,24 +224,23 @@ namespace VecLib {
 		*/
 	}
 
-	template <size_t n, class T>
+	template <size_t Sn, class T>
 	class Vec : public Vector<T> {
 	public:
-		Vec() : Vector<T>(n) {};
-		Vec(const T& x) : Vector<T>(n, x) {};
-		Vec(const T& x, const T& y) : Vector<T>(n, x, y) {};
-		Vec(const T& x, const T& y, const T& z) : Vector<T>(n, x, y, z) {};
+		Vec() : Vector<T>(Sn) {};
+		Vec(const std::initializer_list<T>& vals) : Vector<T>(Sn, vals) {};
+		Vec(std::convertible_to<T> auto ...vals) : Vector<T>(Sn, vals...) {};
 		~Vec() = default;
 
-		Vec(const Vec& other) : Vector<T>(n) {
+		Vec(const Vec& other) : Vector<T>(Sn) {
 			std::copy(other.vec.begin(), other.vec.end(), this->vec.begin());
 		};
 		Vec(Vec&& other) noexcept {
 			this->vec = std::move(other.vec);
 		};
 
-		Vec<n, T>& operator=(const Vec& rhs);
-		Vec<n, T>& operator=(Vec<n, T>&& rhs) noexcept;
+		Vec<Sn, T>& operator=(const Vec& rhs);
+		Vec<Sn, T>& operator=(Vec<Sn, T>&& rhs) noexcept;
 	
 		friend Vec operator+(const Vec& lhs, const Vec& rhs) {
 			auto res = lhs;

@@ -11,7 +11,7 @@ TEST(Vec2float, construct) {
 	Vec<2, float> tmp;
 	const auto& data = tmp.as_container();
 
-	Vec<2, float> tmp2 = Vec<2, float>(1, 1);
+	Vec<2, float> tmp2 = Vec<2, float>( 1, 1 );
 	const auto& data2 = tmp2.as_container();
 
 	EXPECT_EQ(
@@ -25,7 +25,7 @@ TEST(Vec2float, construct) {
 }
 
 TEST(Vec2float, copyConstruct) {
-	Vec<2, float> tmp = Vec<2, float>(1, 1);
+	Vec<2, float> tmp = Vec<2, float>( 1, 1 );
 
 	Vec<2, float> tmp2(tmp);
 	const auto& data2 = tmp2.as_container();
@@ -38,7 +38,7 @@ TEST(Vec2float, copyConstruct) {
 }
 
 TEST(Vec2float, moveConstruct) {
-	Vec<2, float> tmp = Vec<2, float>(1, 1);
+	Vec<2, float> tmp = Vec<2, float>( 1, 1 );
 
 	Vec<2, float> tmp2(std::move(tmp));
 	const auto& data2 = tmp2.as_container();
@@ -51,7 +51,7 @@ TEST(Vec2float, moveConstruct) {
 }
 
 TEST(Vec2float, copyAssign) {
-	Vec<2, float> tmp = Vec<2, float>(1, 1);
+	Vec<2, float> tmp = Vec<2, float>( 1, 1 );
 
 	Vec<2, float> tmp2 = tmp;
 	const auto& data2 = tmp2.as_container();
@@ -64,7 +64,7 @@ TEST(Vec2float, copyAssign) {
 }
 
 TEST(Vec2float, moveAssign) {
-	Vec<2, float> tmp = Vec<2, float>(1, 1);
+	Vec<2, float> tmp = Vec<2, float>( 1, 1 );
 
 	Vec<2, float> tmp2 = std::move(tmp);
 	const auto& data2 = tmp2.as_container();
@@ -77,9 +77,9 @@ TEST(Vec2float, moveAssign) {
 }
 
 TEST(Vec2float, comparisonEquals) {
-	Vec<2, float> tmp = Vec<2, float>(1, 1);
+	Vec<2, float> tmp = Vec<2, float>( 1, 1 );
 
-	Vec<2, float> equal = Vec<2, float>(1, 1);
+	Vec<2, float> equal = Vec<2, float>( 1, 1 );
 
 	EXPECT_EQ(
 		tmp == equal
@@ -87,9 +87,9 @@ TEST(Vec2float, comparisonEquals) {
 }
 
 TEST(Vec2float, comparisonNotEquals) {
-	Vec<2, float> tmp = Vec<2, float>(1, 1);
+	Vec<2, float> tmp = Vec<2, float>( 1, 1 );
 
-	Vec<2, float> equal = Vec<2, float>(1, 0);
+	Vec<2, float> equal = Vec<2, float>( 1, 0 );
 
 	EXPECT_EQ(
 		tmp != equal
@@ -97,10 +97,10 @@ TEST(Vec2float, comparisonNotEquals) {
 }
 
 TEST(Vec2float, comparisonSmallerEquals) {
-	Vec<2, float> tmp = Vec<2, float>(1, 1);
+	Vec<2, float> tmp = Vec<2, float>( 1, 1 );
 
-	Vec<2, float> smaller = Vec<2, float>(1, 0);
-	Vec<2, float> equal = Vec<2, float>(1, 1);
+	Vec<2, float> smaller = Vec<2, float>( 1, 0 );
+	Vec<2, float> equal = Vec<2, float>( 1, 1 );
 
 	EXPECT_EQ(
 		equal <= tmp &&
@@ -109,10 +109,10 @@ TEST(Vec2float, comparisonSmallerEquals) {
 }
 
 TEST(Vec2float, comparisonSmaller) {
-	Vec<2, float> tmp = Vec<2, float>(1, 1);
+	Vec<2, float> tmp = Vec<2, float>( 1, 1 );
 
-	Vec<2, float> smaller = Vec<2, float>(1, 0);
-	Vec<2, float> equal = Vec<2, float>(1, 1);
+	Vec<2, float> smaller = Vec<2, float>( 1, 0 );
+	Vec<2, float> equal = Vec<2, float>( 1, 1 );
 
 	EXPECT_EQ(
 		!(equal < tmp) &&
@@ -121,10 +121,10 @@ TEST(Vec2float, comparisonSmaller) {
 }
 
 TEST(Vec2float, comparisonGreaterEquals) {
-	Vec<2, float> tmp = Vec<2, float>(1, 1);
+	Vec<2, float> tmp = Vec<2, float>( 1, 1 );
 
-	Vec<2, float> greater = Vec<2, float>(1, 2);
-	Vec<2, float> equal = Vec<2, float>(1, 1);
+	Vec<2, float> greater = Vec<2, float>( 1, 2 );
+	Vec<2, float> equal = Vec<2, float>( 1, 1 );
 
 	EXPECT_EQ(
 		equal >= tmp &&
@@ -133,10 +133,10 @@ TEST(Vec2float, comparisonGreaterEquals) {
 }
 
 TEST(Vec2float, comparisonGreater) {
-	Vec<2, float> tmp = Vec<2, float>(1, 1);
+	Vec<2, float> tmp = Vec<2, float>( 1, 1 );
 
-	Vec<2, float> greater = Vec<2, float>(1, 2);
-	Vec<2, float> equal = Vec<2, float>(1, 1);
+	Vec<2, float> greater = Vec<2, float>( 1, 2 );
+	Vec<2, float> equal = Vec<2, float>( 1, 1 );
 
 	EXPECT_EQ(
 		!(equal > tmp) &&
@@ -145,12 +145,12 @@ TEST(Vec2float, comparisonGreater) {
 }
 
 TEST(Vec2float, binaryArithmeticPlus) {
-	Vec<2, float> tmp = Vec<2, float>(1, 2);
+	Vec<2, float> tmp = Vec<2, float>( 1, 2 );
 
-	Vec<2, float> tmp2 = Vec<2, float>(2, 2);
+	Vec<2, float> tmp2 = Vec<2, float>( 2, 2 );
 	tmp2 = tmp + tmp2;
 
-	Vec<2, float> expected = Vec<2, float>(3, 4);
+	Vec<2, float> expected = Vec<2, float>( 3, 4 );
 	const auto& data = tmp2.as_container();
 
 	EXPECT_EQ(
@@ -160,12 +160,12 @@ TEST(Vec2float, binaryArithmeticPlus) {
 }
 
 TEST(Vec2float, binaryArithmeticPlusEquals) {
-	Vec<2, float> tmp = Vec<2, float>(1, 2);
+	Vec<2, float> tmp = Vec<2, float>( 1, 2 );
 
-	Vec<2, float> tmp2 = Vec<2, float>(2, 2);
+	Vec<2, float> tmp2 = Vec<2, float>( 2, 2 );
 	tmp2 += tmp;
 
-	Vec<2, float> expected = Vec<2, float>(3, 4);
+	Vec<2, float> expected = Vec<2, float>( 3, 4 );
 	const auto& data = tmp2.as_container();
 
 	EXPECT_EQ(
@@ -175,12 +175,12 @@ TEST(Vec2float, binaryArithmeticPlusEquals) {
 }
 
 TEST(Vec2float, binaryArithmeticMinus) {
-	Vec<2, float> tmp = Vec<2, float>(3, 4);
+	Vec<2, float> tmp = Vec<2, float>( 3, 4 );
 
-	Vec<2, float> tmp2 = Vec<2, float>(2, 2);
+	Vec<2, float> tmp2 = Vec<2, float>( 2, 2 );
 	tmp2 = tmp - tmp2;
 
-	Vec<2, float> expected = Vec<2, float>(1, 2);
+	Vec<2, float> expected = Vec<2, float>( 1, 2 );
 	const auto& data = tmp2.as_container();
 
 	EXPECT_EQ(
@@ -190,12 +190,12 @@ TEST(Vec2float, binaryArithmeticMinus) {
 }
 
 TEST(Vec2float, binaryArithmeticMinusEquals) {
-	Vec<2, float> tmp = Vec<2, float>(2, 2);
+	Vec<2, float> tmp = Vec<2, float>( 2, 2 );
 
-	Vec<2, float> tmp2 = Vec<2, float>(3, 4);
+	Vec<2, float> tmp2 = Vec<2, float>( 3, 4 );
 	tmp2 -= tmp;
 
-	Vec<2, float> expected = Vec<2, float>(1, 2);
+	Vec<2, float> expected = Vec<2, float>( 1, 2 );
 	const auto& data = tmp2.as_container();
 
 	EXPECT_EQ(
@@ -205,11 +205,11 @@ TEST(Vec2float, binaryArithmeticMinusEquals) {
 }
 
 TEST(Vec2float, binaryArithmeticMult) {
-	Vec<2, float> tmp = Vec<2, float>(3, 4);
+	Vec<2, float> tmp = Vec<2, float>( 3, 4 );
 
 	tmp = tmp * 2;
 
-	Vec<2, float> expected = Vec<2, float>(6, 8);
+	Vec<2, float> expected = Vec<2, float>( 6, 8 );
 	const auto& data = tmp.as_container();
 
 	EXPECT_EQ(
@@ -219,11 +219,11 @@ TEST(Vec2float, binaryArithmeticMult) {
 }
 
 TEST(Vec2float, binaryArithmeticMultEquals) {
-	Vec<2, float> tmp = Vec<2, float>(3, 4);
+	Vec<2, float> tmp = Vec<2, float>( 3, 4 );
 
 	tmp *= 2;
 
-	Vec<2, float> expected = Vec<2, float>(6, 8);
+	Vec<2, float> expected = Vec<2, float>( 6, 8 );
 	const auto& data = tmp.as_container();
 
 	EXPECT_EQ(
@@ -233,11 +233,11 @@ TEST(Vec2float, binaryArithmeticMultEquals) {
 }
 
 TEST(Vec2float, binaryArithmeticDiv) {
-	Vec<2, float> tmp = Vec<2, float>(6, 8);
+	Vec<2, float> tmp = Vec<2, float>( 6, 8 );
 
 	tmp = tmp / 2;
 
-	Vec<2, float> expected = Vec<2, float>(3, 4);
+	Vec<2, float> expected = Vec<2, float>( 3, 4 );
 	const auto& data = tmp.as_container();
 
 	EXPECT_EQ(
@@ -247,11 +247,11 @@ TEST(Vec2float, binaryArithmeticDiv) {
 }
 
 TEST(Vec2float, binaryArithmeticDivEquals) {
-	Vec<2, float> tmp = Vec<2, float>(6, 8);
+	Vec<2, float> tmp = Vec<2, float>( 6, 8 );
 
 	tmp /= 2;
 
-	Vec<2, float> expected = Vec<2, float>(3, 4);
+	Vec<2, float> expected = Vec<2, float>( 3, 4 );
 	const auto& data = tmp.as_container();
 
 	EXPECT_EQ(
@@ -261,7 +261,7 @@ TEST(Vec2float, binaryArithmeticDivEquals) {
 }
 
 TEST(Vec2float, subscript) {
-	Vec<2, float> tmp = Vec<2, float>(6, 8);
+	Vec<2, float> tmp = Vec<2, float>( 6, 8 );
 
 	EXPECT_EQ(
 		tmp[0] == 6 &&
@@ -270,7 +270,7 @@ TEST(Vec2float, subscript) {
 }
 
 TEST(Vec2float, subscriptConst) {
-	const Vec<2, float> tmp = Vec<2, float>(6, 8);
+	const Vec<2, float> tmp = Vec<2, float>( 6, 8 );
 
 	EXPECT_EQ(
 		tmp[0] == 6 &&
@@ -279,7 +279,7 @@ TEST(Vec2float, subscriptConst) {
 }
 
 TEST(Vec2float, string) {
-	const Vec<2, float> tmp = Vec<2, float>(6, 8);
+	const Vec<2, float> tmp = Vec<2, float>( 6, 8 );
 
 	std::string expexted = "[" + std::to_string(6.f) + ";" + std::to_string(8.f) + "]";
 
@@ -289,7 +289,7 @@ TEST(Vec2float, string) {
 }
 
 TEST(Vec2float, magnitude) {
-	Vec<2, float> tmp = Vec<2, float>(6, 8);
+	Vec<2, float> tmp = Vec<2, float>( 6, 8 );
 
 	double expected = sqrt(pow(6, 2) + pow(8, 2));
 
@@ -299,10 +299,10 @@ TEST(Vec2float, magnitude) {
 }
 
 TEST(Vec2float, dot) {
-	Vec<2, float> tmp = Vec<2, float>(2, 3);
-	Vec<2, float> tmp2 = Vec<2, float>(1, 4);
+	Vec<2, float> tmp = Vec<2, float>( 1, 4 );
+	Vec<4, float> tmp2 = Vec<4, float>( 2, 3, 1, -3 );
 
-	double expected = tmp[0] * tmp2[0] + tmp[1] * tmp2[1];
+	double expected = tmp[0] * tmp2[0] + tmp[1] * tmp2[1] + tmp[0] * tmp2[2] + tmp[1] * tmp2[3];
 
 	EXPECT_EQ(
 		expected == tmp.dot(tmp2)
@@ -310,10 +310,10 @@ TEST(Vec2float, dot) {
 }
 
 TEST(Vec2float, anglerad) {
-	Vec<2, float> tmp = Vec<2, float>(1, 0);
-	Vec<2, float> tmp2 = Vec<2, float>(0, 1);
+	Vec<2, float> tmp = Vec<2, float>( 1, 0 );
+	Vec<2, float> tmp2 = Vec<2, float>( -1, 0 );
 
-	double expected = M_PI / 2;
+	double expected = M_PI;
 
 	EXPECT_EQ(
 		expected == tmp.anglerad(tmp2)
@@ -321,10 +321,10 @@ TEST(Vec2float, anglerad) {
 }
 
 TEST(Vec2float, angledeg) {
-	Vec<2, float> tmp = Vec<2, float>(1, 0);
-	Vec<2, float> tmp2 = Vec<2, float>(0, 1);
+	Vec<2, float> tmp = Vec<2, float>( 1, 0 );
+	Vec<2, float> tmp2 = Vec<2, float>( -1, 0 );
 
-	double expected = (M_PI / 2) / M_PI * 180.f;
+	double expected = 180.f;
 
 	EXPECT_EQ(
 		expected == tmp.angledeg(tmp2)
